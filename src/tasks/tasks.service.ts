@@ -5,24 +5,27 @@ import { CreateTaskDto } from './dto/create-task.dto';
 
 @Injectable()
 export class TasksService {
-    private tasks: Task[] = [];
+  private tasks: Task[] = [];
 
-    getAllTasks(): Task[] {
-        return this.tasks;
-    }
+  getAllTasks(): Task[] {
+    return this.tasks;
+  }
 
+  createTask(createTask: CreateTaskDto): Task {
+    const { title, description } = createTask;
 
-    createTask(createTask: CreateTaskDto): Task {
-        const { title, description } = createTask;
+    const task: Task = {
+      id: uuid(),
+      title,
+      description,
+      status: TaskStatus.OPEN,
+    };
 
-        const task: Task = {
-            id: uuid(),
-            title,
-            description,
-            status: TaskStatus.OPEN
-        };
+    this.tasks.push(task);
+    return task;
+  }
 
-        this.tasks.push(task);
-        return task;
-    }
+  getTaskById(id: string): Task {
+    return this.tasks.find((task) => task.id === id);
+  }
 }
